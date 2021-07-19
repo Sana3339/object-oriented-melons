@@ -183,3 +183,30 @@ def get_sellability_report(melons):
         status = '(CAN BE SOLD)' if melon.is_sellable() else '(NOT SELLABLE)'
 
         print(f'{harvested_by} {field} {status}')
+
+def process_melon_file(filename):
+    """Takes in a text file and creates a melon instance for each line.
+
+    Arguments:
+        - filename: a text file with each row being the details for a different melon instance
+
+    Return:
+        - List of all melon object instances
+    """
+
+    melon_data = open(filename)
+
+    melon_list = []
+
+    for line in melon_data:
+        _, shape_rating, _, color_rating, _, code, _, _, harvested_by, _, _, field = line.rstrip().split(" ")
+
+        melon_types = make_melon_types()
+        melons_by_id = make_melon_type_lookup(melon_types)
+        type = melons_by_id[code]
+
+        melon_object = Melon(type, shape_rating, color_rating, field, harvested_by)
+
+        melon_list.append(melon_object)
+
+    return melon_list
